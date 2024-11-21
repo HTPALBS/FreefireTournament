@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Fire Tournament Registration</title>
+    <style>
+        /* Base styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: url('https://wallpapercave.com/wp/wp7451665.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+        }
+        .container {
+            position: relative;
+            width: 90%;
+            max-width: 900px;
+            height: 600px;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+        }
+        .panels {
+            display: flex;
+            width: 200%;
+            height: 100%;
+            transition: transform 0.5s ease-in-out;
+        }
+        .panel {
+            width: 50%;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow-y: auto;
+            position: relative;
+        }
+        .form-panel {
+            background: rgba(0, 0, 0, 0.7);
+        }
+        .admin-panel {
+            background: rgba(20, 20, 20, 0.8);
+        }
+
+        /* Headings */
+        h1, h2 {
+            text-align: center;
+            color: #feca57;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            margin-top: 50px; /* Pushes the title lower */
+            text-transform: uppercase; /* Makes the title capitalized */
+        }
+
+        /* Form Elements */
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #fff;
+        }
+        input, button {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        input {
+            background-color: rgba(255, 255, 255, 0.8);
+            color: #000;
+        }
+        button {
+            background-color: #feca57;
+            color: #000;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 20px;
+        }
+        button:hover {
+            background-color: #ff9f43;
+        }
+
+        /* QR Code Section */
+        .qr-section img {
+            display: block;
+            margin: 20px auto;
+            width: 150px;
+            border: 2px solid #feca57;
+            border-radius: 8px;
+        }
+
+        /* Admin Panel List */
+        ul {
+            list-style-type: none;
+            padding: 0;
+            overflow-y: auto;
+            max-height: 400px;
+        }
+        li {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            color: #000;
+        }
+
+        /* Toggle Button */
+        .toggle-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(45deg, #ff6f61, #feca57);
+            color: black;
+            padding: 15px 25px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            z-index: 10;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s;
+            text-transform: uppercase;
+        }
+        .toggle-button:hover {
+            background: linear-gradient(45deg, #ff9f43, #ff6f61);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Toggle Button -->
+        <button class="toggle-button" onclick="togglePanels()" id="toggleButton">
+            Total Forms: 0
+        </button>
+
+        <div class="panels" id="panels">
+            <!-- Form Panel -->
+            <div class="panel form-panel">
+                <h1>FREE FIRE TOURNAMENT REGISTRATION</h1>
+                <form id="registrationForm">
+                    <label for="realName">Your Real Name</label>
+                    <input type="text" id="realName" name="realName" placeholder="Enter your real name" required>
+
+                    <label for="gmail">Your Gmail</label>
+                    <input type="email" id="gmail" name="gmail" placeholder="Enter your Gmail" required>
+
+                    <label for="phoneNumber">Your Phone Number</label>
+                    <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="Enter your phone number" required>
+
+                    <label for="instaId">Your Instagram ID</label>
+                    <input type="text" id="instaId" name="instaId" placeholder="Enter your Instagram ID" required>
+
+                    <div class="qr-section">
+                        <label>Payment QR Code</label>
+                        <img src="https://via.placeholder.com/150" alt="Payment QR Code">
+                    </div>
+
+                    <label for="paymentProof">Upload Payment Proof</label>
+                    <input type="file" id="paymentProof" name="paymentProof" required>
+
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+
+            <!-- Admin Panel -->
+            <div class="panel admin-panel">
+                <h1>Admin Panel</h1>
+                <h2>All Registrations</h2>
+                <ul id="formList">
+                    <!-- Filled forms will appear here -->
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let formCount = 0; // Track form count
+        let isAdminPanelVisible = false; // Track active panel state
+
+        // Function to toggle panels
+        function togglePanels() {
+            const panels = document.getElementById("panels");
+            const toggleButton = document.getElementById("toggleButton");
+
+            if (isAdminPanelVisible) {
+                panels.style.transform = "translateX(0)"; // Show Form Panel
+                toggleButton.textContent = `Total Forms: ${formCount}`;
+            } else {
+                panels.style.transform = "translateX(-50%)"; // Show Admin Panel
+                toggleButton.textContent = "Back to Form Panel";
+            }
+
+            isAdminPanelVisible = !isAdminPanelVisible; // Toggle panel state
+        }
+
+        // Handle form submission
+        document.getElementById("registrationForm").addEventListener("submit", function (event) {
+            event.preventDefault(); // Prevent form submission
+
+            const realName = document.getElementById("realName").value;
+            const gmail = document.getElementById("gmail").value;
+            const phoneNumber = document.getElementById("phoneNumber").value;
+            const instaId = document.getElementById("instaId").value;
+            const paymentProof = document.getElementById("paymentProof").files[0]?.name || "No file uploaded";
+
+            // Add the new registration to the admin list
+            const newEntry = document.createElement("li");
+            newEntry.textContent = `Name: ${realName}, Gmail: ${gmail}, Phone: ${phoneNumber}, Insta: ${instaId}, Payment Proof: ${paymentProof}`;
+            document.getElementById("formList").appendChild(newEntry);
+
+            // Update form count
+            formCount++;
+            if (!isAdminPanelVisible) {
+                document.getElementById("toggleButton").textContent = `Total Forms: ${formCount}`;
+            }
+
+            // Reset the form
+            document.getElementById("registrationForm").reset();
+
+            alert("Registration Successful!");
+        });
+    </script>
+</body>
+</html>
